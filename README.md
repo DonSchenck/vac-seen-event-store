@@ -20,7 +20,7 @@ This activity needs the following:
 
 The goal is to create an instance of a PostgreSQL database in your Red Hat OpenShift cluster. This database is required by the Marten event store that will be used in the C# application.  
 
-### Step 1
+### Step 1: Find the needed template
 Get a list the templates to find the PostgreSQL template that is needed. It turns out to be "postgresql-persistent". Use the following command to do this:
 
 Bash:  
@@ -62,7 +62,7 @@ sso74-postgresql                                    An example application based
 sso74-postgresql-persistent                         An example application based on RH-SSO 7.4 on OpenJDK image. For more informa...   35 (18 blank)     9
 ```
 
-### Step 2
+### Step 2: Find the necessary parameters
 Before the PostgreSQL instance can be created, the necessary parameters must be discovered. Use the following command to get the list of parameters need:  
 
 `oc describe templates postgresql-persistent --namespace=openshift`  
@@ -156,9 +156,10 @@ Objects:
     DeploymentConfig            ${DATABASE_SERVICE_NAME}
 ```  
 
-With this information in hand, the following command will create exactly what is wanted — a persistent PostgreSQL instance in the project in the cluster. Again, notice that we are specifying the user name (POSTGRESQL_USER), the user password (POSTGRESQL_PASSWORD), and the database name (POSTGRESQL_DATABASE) parameters.
+### Step 3: Create the PostgreSQL database instance
+With the parameter information in hand, the following command will create exactly what is wanted — a persistent PostgreSQL instance in the project in the cluster. Again, notice that we are specifying the user name (POSTGRESQL_USER), the user password (POSTGRESQL_PASSWORD), and the database name (POSTGRESQL_DATABASE) parameters.
 
-This information will later be used in an OpenShift Secret object to enable a microservice to connect to this database.
+The user name, password, and database name will later be used in an OpenShift Secret object to enable a microservice to connect to this database.
 
 Run the following command to create the PostgreSQL instance:
 
