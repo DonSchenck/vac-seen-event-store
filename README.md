@@ -1,11 +1,11 @@
 # vac-seen-event-store
 Creates a PostgreSQL database which will be used by Marten ([https://martendb.io/](https://martendb.io/)).
 
-This is Part Two (of four) of the C#, Kafka and OpenShift activity.
+This is Part Two (of seven) of the C#, Kafka and OpenShift "vac-seen" activity.
 
 ## Need help?
-If you need help or get stuck, email devsandbox@redhat.com.  
-If you find a defect, create an Issue in this repository.
+If you need help or get stuck, email devsandbox@redhat.com.
+If you find a defect, [create an Issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) in this repository.  
 
 ## Work environment  
 This activity needs the following:
@@ -23,11 +23,16 @@ The goal is to create an instance of a PostgreSQL database in your Red Hat OpenS
 ### Step 1: Find the needed template
 Get a list the templates to find the PostgreSQL template that is needed. It turns out to be "postgresql-persistent". Use the following command to do this:
 
-Bash:  
+___
+<h2>Step 1:<br>  
+RUN THIS COMMAND if you are using Bash:</h2>  
+
 `oc get templates --namespace=openshift | grep postgresql`  
 
-PowerShell:  
+<h2>RUN THIS COMMAND if you are using PowerShell:</h2>  
+
 `oc get templates --namespace=openshift | Select-String postgresql`  
+___
 
 The results of the `oc get templates` command will be similar to this:  
 ```console
@@ -62,10 +67,14 @@ sso74-postgresql                                    An example application based
 sso74-postgresql-persistent                         An example application based on RH-SSO 7.4 on OpenJDK image. For more informa...   35 (18 blank)     9
 ```
 
-### Step 2: Find the necessary parameters
+### Find the necessary parameters
 Before the PostgreSQL instance can be created, the necessary parameters must be discovered. Use the following command to get the list of parameters need:  
+___
+<h2>Step 2: RUN THIS COMMAND</h2>
 
 `oc describe templates postgresql-persistent --namespace=openshift`  
+___
+
 
 The results will be similar to the following. Notice the list of parameters for the template and note that, in this case, we want to specify the user name, the user password, and the name of the database:  
 
@@ -156,14 +165,17 @@ Objects:
     DeploymentConfig            ${DATABASE_SERVICE_NAME}
 ```  
 
-### Step 3: Create the PostgreSQL database instance
+### Create the PostgreSQL database instance
 With the parameter information in hand, the following command will create exactly what is wanted — a persistent PostgreSQL instance in the project in the cluster. Again, notice that we are specifying the user name (POSTGRESQL_USER), the user password (POSTGRESQL_PASSWORD), and the database name (POSTGRESQL_DATABASE) parameters.
 
 The user name, password, and database name will later be used in an OpenShift Secret object to enable a microservice to connect to this database.
 
-Run the following command to create the PostgreSQL instance:
+Run the following command to create the PostgreSQL instance:  
+___
+<h2>Step 3: RUN THIS COMMAND</h2>
 
 `oc new-app openshift/postgresql-persistent -e POSTGRESQL_USER=postgres -e POSTGRESQL_DATABASE=postgres -e POSTGRESQL_PASSWORD=7f986df431344327b52471df0142e520`  
+___
 
 ### Next step(s)
 The database has been created. The next step will be to create a program that uses this PostgreSQL instance for a Marten event store.
