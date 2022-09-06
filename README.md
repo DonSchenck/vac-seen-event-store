@@ -1,35 +1,36 @@
 # vac-seen-event-store
-Creates a PostgreSQL database which will be used by Marten ([https://martendb.io/](https://martendb.io/)).
+## What is this?
+This repo is Part Three (of eight) of a workshop/activity/tutorial that comprises the "Vac-Seen System". This system is associated with, and specifically created for, the [Red Hat OpenShift Sandbox](https://developers.redhat.com/developer-sandbox).
 
-This is Part Two (of seven) of the C#, Kafka and OpenShift "vac-seen" activity.
+At the end of this tutorial you will have an instance of aPostgreSQL database which will be used by Marten ([https://martendb.io/](https://martendb.io/)) that is running in an OpenShift cluster.
 
 ## Need help?
 If you need help or get stuck, email devsandbox@redhat.com.
-If you find a defect, [create an Issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) in this repository.  
+If you find a defect, [create an Issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) in this repository.
 
-## Work environment  
-This activity needs the following:
-* Access to a command line
-* You must be signed into your OpenShift sandbox
+## Prerequisites
+The following **three** prerequisites are necessary:
+1. An account in [OpenShift Sandbox](https://developers.redhat.com/developer-sandbox) (No problem; it's free). This is not actually *necessary*, since you can use this tutorial with any OpenShift cluster.
+1. The `oc` command-line tool for OpenShift. There are instructions later in this article for the installation of `oc`.
+1. Your machine will need access to a command line; Bash or PowerShell, either is fine.
 
-## Prerequisites and Requirements  
-* `oc` command line tool must be installed  
-* Access to OpenShift sandbox
+## All Operating Systems Welcome
+You can use this activity regardless of whether your PC runs Windows, Linux, or macOS.
 
 ## Create PostgreSQL instance
 
 The goal is to create an instance of a PostgreSQL database in your Red Hat OpenShift cluster. This database is required by the Marten event store that will be used in the C# application.  
 
-### Step 1: Find the needed template
+## Part 1: Find the needed template
 Get a list the templates to find the PostgreSQL template that is needed. It turns out to be "postgresql-persistent". Use the following command to do this:
 
 ___
-<h2>Step 1:<br>  
+### Step 1.1
 RUN THIS COMMAND if you are using Bash:</h2>  
 
 `oc get templates --namespace=openshift | grep postgresql`  
 
-<h2>RUN THIS COMMAND if you are using PowerShell:</h2>  
+RUN THIS COMMAND if you are using PowerShell:
 
 `oc get templates --namespace=openshift | Select-String postgresql`  
 ___
@@ -70,7 +71,8 @@ sso74-postgresql-persistent                         An example application based
 ### Find the necessary parameters
 Before the PostgreSQL instance can be created, the necessary parameters must be discovered. Use the following command to get the list of parameters need:  
 ___
-<h2>Step 2: RUN THIS COMMAND</h2>
+### Step 1.1
+RUN THIS COMMAND to see the parameters for the template:  
 
 `oc describe templates postgresql-persistent --namespace=openshift`  
 ___
@@ -172,10 +174,11 @@ The user name, password, and database name will later be used in an OpenShift Se
 
 Run the following command to create the PostgreSQL instance:  
 ___
-<h2>Step 3: RUN THIS COMMAND</h2>
+### Step 1.3
+RUN THIS COMMAND to create the PostgreSQL database instance:
 
 `oc new-app openshift/postgresql-persistent -e POSTGRESQL_USER=postgres -e POSTGRESQL_DATABASE=postgres -e POSTGRESQL_PASSWORD=7f986df431344327b52471df0142e520`  
 ___
 
-### Next step(s)
-The database has been created. The next step will be to create a program that uses this PostgreSQL instance for a Marten event store.
+## Congratulations
+The database has been created.
